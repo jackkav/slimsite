@@ -1,8 +1,9 @@
 require 'dm-core'
 require 'dm-migrations'
 
-DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-
+configure do
+	DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+end
 class Song
 	include DataMapper::Resource
 	property :id, Serial
@@ -22,23 +23,15 @@ get '/songs' do
 	slim :songs
 end
 
-get '/songs/:id' do
-	@song = Song.get(params[:id])
-	slim :show_song
-end
-
 get '/songs/new' do
 	@song = Song.new
 	slim :new_song
 end
+
 put '/songs/:id' do
 	song = Song.get(params[:id])
 	song.update(params[:song])
 	redirect to("/songs/#{song.id}")
-end
-get '/songs/:id' do
-	@song = Song.get(params[:id])
-	slim :show_song
 end
 
 post '/songs' do

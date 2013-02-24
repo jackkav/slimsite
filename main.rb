@@ -4,6 +4,9 @@ require 'slim'
 require 'sass'
 require './song.rb'
 
+configure do
+	set :port, 1337
+end
 get('/styles.css'){ scss :styles }
 
 get '/' do
