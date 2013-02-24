@@ -9,7 +9,7 @@ class Song
 	property :lyrics, Text
 	property :length, Integer
 	property :released_on, Date
-
+	property :likes, Integer, :default => 0
 	def released_on=date
 		super Date.strptime(date, '%m/%d/%Y')
 	end
@@ -22,7 +22,7 @@ get '/songs' do
 end
 
 get '/songs/new' do
-	halt(401,'Not Authorized') unless session[:admin]
+	protected!
 	@song = Song.new
 	slim :new_song
 end
@@ -43,7 +43,7 @@ post '/songs' do
 end
 
 put '/songs/:id' do
-	
+	protected!
 	song = find_song
 	if song.update(params[:song])
 		flash[:notice] = "Song successfully updated"
@@ -56,6 +56,14 @@ delete '/songs/:id' do
 		flash[:notice] = "Song deleted"
 	end
 	redirect to('/songs')
+end
+
+post '/songs/:id/like' do
+	@song = find_song
+	@song.likes = @song.likes.next
+	@song.save
+	redirect to"/songs/#{@song.id}" unless request.xhr?
+	slim :like, :layout => false
 end
 
 module SongHelpers
