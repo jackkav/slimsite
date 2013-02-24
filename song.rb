@@ -26,6 +26,11 @@ get '/songs/new' do
 	slim :new_song
 end
 
+get '/songs/:id' do
+	@song = Song.get(params[:id])
+	slim :show_song
+end
+
 put '/songs/:id' do
 	song = Song.get(params[:id])
 	song.update(params[:song])

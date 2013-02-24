@@ -12,8 +12,6 @@ configure :production do
 end
 configure do
 	enable :sessions
-	set :username, 'frank'
-	set :password, 'sinatra'
 end
 configure do
 	set :port, 1337
