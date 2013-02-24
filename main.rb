@@ -11,9 +11,32 @@ configure :production do
 	DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
 configure do
+	enable :sessions
+	set :username, 'frank'
+	set :password, 'sinatra'
+end
+configure do
 	set :port, 1337
 end
 get('/styles.css'){ scss :styles }
+
+get '/login' do
+	slim :login
+end
+
+post '/login' do
+	if params[:username] == settings.username && params[:password] == settings.password
+		session[:admin] = true
+		redirect to('/songs')
+	else
+		slim :login
+	end
+end
+
+get '/logout' do
+	session.clear
+	redirect to('/login')
+end
 
 get '/' do
 	slim :home
