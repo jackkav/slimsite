@@ -6,6 +6,7 @@ gem "dm-core"
 gem "dm-migrations"
 gem "thin"
 gem "sinatra-flash"
+gem "sinatra-contrib"
 gem "coffee-script"
 gem "therubyracer"
 gem "pg", :group => :production
